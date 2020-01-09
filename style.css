@@ -1,0 +1,12 @@
+.clicked {
+    color: red;
+    font-size: 2rem;
+}
+
+.item {
+    list-style-type: none;
+}
+
+ul {
+    overflow: hidden;
+}
