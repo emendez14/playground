@@ -11,6 +11,29 @@ let target = document.querySelector(".mover"),
     unclicked = true,
     mouseLocationX = document.querySelector(".x-axis"),
     mouseLocationY = document.querySelector(".y-axis");
+let taskInput = document.querySelector(".taskInput"),
+    submitButt = document.querySelector(".pushTask"),
+    taskForm = document.querySelector(".taskForm");
+
+taskForm.addEventListener("submit", function(e){
+
+    const task = taskInput.value;
+
+    let tasks;
+
+    if(localStorage.getItem('tasks') === null){
+        tasks = []
+    } else {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+    }
+
+    tasks.push(task);
+
+    localStorage.setItem('tasks', JSON.stringify(tasks))
+
+
+    e.preventDefault();
+})
 
 target.addEventListener("click", ()=> {
     texts.forEach((i) => {
@@ -101,3 +124,44 @@ document.addEventListener("mousemove", (e)=> {
     mouseLocationY.textContent = posY;
 })
 
+function Book(title, author, isbn) {
+    this.title = title;
+    this.author = author;
+    this.isbn = isbn;
+}
+
+// UI Constructor
+function UI(){}
+
+UI.prototype.addBookToList = function(book){
+
+    const list = document.getElementById("book-list");
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${book.title}</td>
+                     <td>${book.author}</td>
+                     <td>${book.isbn}</td>
+                     <td><a href="#" class="delete">x</a></td>`;
+
+    list.appendChild(row);
+
+    console.log(row)
+}
+
+document.getElementById("book-form").addEventListener("submit", function(e){
+    // get form vals
+    const title = document.getElementById("title").value;
+    const author = document.getElementById("author").value;
+    const isbn = document.getElementById("isbn").value;
+    // instantiating a book
+    const book = new Book(title, author, isbn);
+
+    // instantiate UI 
+    const ui = new UI();
+
+    // add book to list
+    ui.addBookToList(book);
+
+    console.log(ui)
+
+    e.preventDefault();
+})
