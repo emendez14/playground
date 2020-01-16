@@ -124,44 +124,62 @@ document.addEventListener("mousemove", (e)=> {
     mouseLocationY.textContent = posY;
 })
 
-function Book(title, author, isbn) {
+function Book(title, author, isbn){
     this.title = title;
     this.author = author;
     this.isbn = isbn;
 }
 
-// UI Constructor
 function UI(){}
 
-UI.prototype.addBookToList = function(book){
+UI.prototype.addToBookList = function(){
+    let list = document.getElementById("book-list");
+    let row = document.createElement("tr");
+    row.innerHTML = `<td>${title.value}</td>
+                     <td>${author.value}</td>
+                     <td>${isbn.value}</td>`;
 
-    const list = document.getElementById("book-list");
-    const row = document.createElement("tr");
-    row.innerHTML = `<td>${book.title}</td>
-                     <td>${book.author}</td>
-                     <td>${book.isbn}</td>
-                     <td><a href="#" class="delete">x</a></td>`;
-
-    list.appendChild(row);
-
-    console.log(row)
+    list.appendChild(row)
 }
 
 document.getElementById("book-form").addEventListener("submit", function(e){
-    // get form vals
-    const title = document.getElementById("title").value;
-    const author = document.getElementById("author").value;
-    const isbn = document.getElementById("isbn").value;
-    // instantiating a book
-    const book = new Book(title, author, isbn);
 
-    // instantiate UI 
-    const ui = new UI();
+    let title = document.getElementById("title").value;
+    let author = document.getElementById("author").value;
+    let isbn = document.getElementById("isbn").value;
 
-    // add book to list
-    ui.addBookToList(book);
+    let book = new Book(title, author, isbn);
 
-    console.log(ui)
+    let ui = new UI();
+
+    ui.addToBookList(book);
 
     e.preventDefault();
 })
+
+document.querySelector(".getData").addEventListener("click", loadData);
+
+function loadData(){
+    const xhr = new XMLHttpRequest();
+
+    xhr.open('GET', 'data.txt', true);
+
+    xhr.onload = function(){
+        if(this.status === 200){
+            console.log(this.responseText);
+        }
+    }
+
+    xhr.send();
+
+    xhr.onerror = function(){
+        console.log('request error...');
+    }
+
+    xhr.onprogress = function(){
+        console.log("READYSTATE", xhr.readyState);
+    }
+}
+
+
+
