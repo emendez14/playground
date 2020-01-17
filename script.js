@@ -162,24 +162,45 @@ document.querySelector(".getData").addEventListener("click", loadData);
 function loadData(){
     const xhr = new XMLHttpRequest();
 
-    xhr.open('GET', 'data.txt', true);
+    xhr.open("GET", "data.txt", true);
 
     xhr.onload = function(){
         if(this.status === 200){
-            console.log(this.responseText);
+            console.log(this.responseText)
         }
     }
 
     xhr.send();
-
-    xhr.onerror = function(){
-        console.log('request error...');
-    }
-
-    xhr.onprogress = function(){
-        console.log("READYSTATE", xhr.readyState);
-    }
 }
 
+document.querySelector(".getOtherData").addEventListener("click", loadCustomers);
 
+function loadCustomers(e){
+    const xhr = new XMLHttpRequest();
 
+    xhr.open("GET", "something.json", true);
+
+    xhr.onload = function(){
+        if(this.status === 200){
+            const customers = JSON.parse(this.responseText);
+
+            let output = '';
+
+            customers.forEach(function(customer){
+                output += `
+                <ul>
+                    <li>${customer.id}</li>
+                    <li>${customer.name}</li>
+                    <li>${customer.company}</li>
+                    <li>${customer.phone}</li>
+                </ul>
+                `;
+            })
+
+            document.querySelector(".output").innerHTML = output;
+        }
+    }
+    xhr.send()
+}
+
+    
