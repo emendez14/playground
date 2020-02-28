@@ -173,34 +173,90 @@ function loadData(){
     xhr.send();
 }
 
+
+
 document.querySelector(".getOtherData").addEventListener("click", loadCustomers);
 
-function loadCustomers(e){
+function loadCustomers(){
+
     const xhr = new XMLHttpRequest();
 
     xhr.open("GET", "something.json", true);
 
     xhr.onload = function(){
         if(this.status === 200){
-            const customers = JSON.parse(this.responseText);
+            let customers = JSON.parse(this.responseText);
 
             let output = '';
 
-            customers.forEach(function(customer){
+            customers.forEach((customer)=>{
                 output += `
                 <ul>
                     <li>${customer.id}</li>
+                    <li>${customer.phone}</li>
                     <li>${customer.name}</li>
                     <li>${customer.company}</li>
-                    <li>${customer.phone}</li>
                 </ul>
                 `;
-            })
-
-            document.querySelector(".output").innerHTML = output;
+            });
+            document.querySelector('.output').innerHTML = output;
         }
     }
+
     xhr.send()
 }
 
-    
+
+const posts = [
+    {title: 'post 1', body: 'this is post one'},
+    {title: 'post 2', body: 'this is post two'}
+];
+
+/* 
+
+function createPost(post){
+    setTimeout(function(){
+        posts.push(post);
+    }, 2000);
+}
+
+function getPosts(){
+    setTimeout(function(){
+        let output = '';
+
+        posts.forEach((post)=>{
+            output += `
+            <li>${post.title}</li>
+            `;
+        });
+        document.body.innerHTML = output;
+    }, 1000);
+}
+
+createPost({title: 'post 3', body: 'this is post 3'});
+
+getPosts();
+
+*/
+
+function createPost(post, callback){
+    setTimeout(function(){
+        posts.push(post);
+        callback();
+    }, 2000);
+}
+
+function getPosts(){
+    setTimeout(function(){
+        let output = '';
+
+        posts.forEach((post)=>{
+            output += `
+            <li>${post.title}</li>
+            `;
+        });
+        document.body.innerHTML = output;
+    }, 1000);
+}
+
+createPost({title: 'post 3', body: 'this is post 3'}, getPosts);
